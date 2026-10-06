@@ -2,15 +2,13 @@ import { Suspense } from 'react';
 import {
   PlayerDetailsStaticSkeleton,
   PlayerStatsChartSkeleton,
-  PlayerNewsSkeleton,
   PlayerActionBarSkeleton,
-  PlayerAiSummarySkeleton,
+  PlayerPrTrendSkeleton,
 } from '@/components/layout/skeletons';
 import { fetchPlayerDataByID } from '@/lib/data/players';
 import { PlayerDetailsStatic } from '@/components/player/player-detail-static';
 import { PlayerStatsChart } from '@/components/player/player-stats-chart';
-import PlayerNews from '@/components/player/player-news';
-import PlayerAiSummary from '@/components/player/player-ai-summary';
+import PlayerPrTrend from '@/components/player/player-pr-trend';
 import PlayerActionBar from '@/components/player/player-action-bar';
 
 export default async function PlayerDetailsPage({
@@ -31,36 +29,24 @@ export default async function PlayerDetailsPage({
     return <PlayerNotFoundError />;
   }
 
-  // const queryClient = getQueryClient();
-
-  // queryClient.prefetchQuery({
-  //   queryKey: ['playerStats', playerId],
-  //   queryFn: () => fetchPlayerStatsByID(playerId),
-  // });
-
-  // const stats = await fetchPlayerStatsByID(playerId);
-  // // console.log(stats);
+  const priceSeries = player.pr_price_series ?? [];
 
   return (
-    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_1fr_300px] lg:grid-rows-[350px_1fr_250px]">
+    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto_auto]">
       <Suspense fallback={<PlayerDetailsStaticSkeleton />}>
         <PlayerDetailsStatic player={player} />
       </Suspense>
 
       <Suspense fallback={<PlayerStatsChartSkeleton />}>
-        <PlayerStatsChart priceSeries={player.pr_price_series ?? []} />
+        <PlayerStatsChart priceSeries={priceSeries} />
       </Suspense>
 
       <Suspense fallback={<PlayerActionBarSkeleton />}>
-        <PlayerActionBar averages={player.averages} />
+        <PlayerActionBar averages={player.averages} priceSeries={priceSeries} />
       </Suspense>
 
-      <Suspense fallback={<PlayerNewsSkeleton />}>
-        <PlayerNews playerId={player.id} />
-      </Suspense>
-
-      <Suspense fallback={<PlayerAiSummarySkeleton />}>
-        <PlayerAiSummary playerId={player.id} />
+      <Suspense fallback={<PlayerPrTrendSkeleton />}>
+        <PlayerPrTrend priceSeries={priceSeries} />
       </Suspense>
     </div>
   );
