@@ -54,6 +54,23 @@ const playerStatsSchema = z.object({
   plusMinus: z.string(),
   gamedate: z.date(),
   created_at: z.date(),
+  is_mock: z.boolean().nullable().optional(),
+});
+
+export const prPricePointSchema = z.object({
+  score: z.number(),
+  at: z.date(),
+  source: z.enum(['cicero_scores', 'player_stats']),
+  isMock: z.boolean(),
+  label: z.string(),
+  statsId: z.number().optional(),
+  points: z.number().optional(),
+  assists: z.number().optional(),
+  rebounds: z.number().optional(),
+  opp: z.string().nullable().optional(),
+  gameResult: z.string().nullable().optional(),
+  min: z.string().optional(),
+  comment: z.string().nullable().optional(),
 });
 
 const playerAveragesSchema = z.object({
@@ -101,7 +118,7 @@ const playerSchema = z.object({
   picture: z.string().optional(),
   averages: playerAveragesSchema.optional(),
   stats: z.array(playerStatsSchema).optional(),
-  cicero_score: z.string().nullable().optional(),
+  pr_price_series: z.array(prPricePointSchema).optional(),
   last_update: z.date().optional().nullable(),
 });
 
@@ -109,6 +126,7 @@ export { playerStatsSchema, playerAveragesSchema, playerSchema };
 export type PlayerStats = z.infer<typeof playerStatsSchema>;
 export type PlayerAverages = z.infer<typeof playerAveragesSchema>;
 export type Player = z.infer<typeof playerSchema>;
+export type PrPricePoint = z.infer<typeof prPricePointSchema>;
 
 // ---- News ----
 

@@ -6,7 +6,7 @@ import {
   PlayerActionBarSkeleton,
   PlayerAiSummarySkeleton,
 } from '@/components/layout/skeletons';
-import { fetchPlayerDataByID, fetchPlayerStatsByID } from '@/lib/data/players';
+import { fetchPlayerDataByID } from '@/lib/data/players';
 import { PlayerDetailsStatic } from '@/components/player/player-detail-static';
 import { PlayerStatsChart } from '@/components/player/player-stats-chart';
 import PlayerNews from '@/components/player/player-news';
@@ -48,16 +48,11 @@ export default async function PlayerDetailsPage({
       </Suspense>
 
       <Suspense fallback={<PlayerStatsChartSkeleton />}>
-        {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
-        <PlayerStatsChart initialStats={player.stats ?? []} />
-        {/* </HydrationBoundary> */}
+        <PlayerStatsChart priceSeries={player.pr_price_series ?? []} />
       </Suspense>
 
       <Suspense fallback={<PlayerActionBarSkeleton />}>
-        <PlayerActionBar
-          averages={player.averages}
-          ciceroScore={player.cicero_score}
-        />
+        <PlayerActionBar averages={player.averages} />
       </Suspense>
 
       <Suspense fallback={<PlayerNewsSkeleton />}>

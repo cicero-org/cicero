@@ -19,6 +19,7 @@ import { db } from '@/server/db';
 import { playerAverages } from '@/server/db/schema/player_averages';
 import { ciceroScores } from '@/server/db/schema/cicero_scores';
 import { desc } from 'drizzle-orm';
+import { buildPrPriceSeries } from '@/lib/pr-price';
 
 export const fetchPlayerData = unstable_cache(
   async (): Promise<Player[]> => {
@@ -54,7 +55,6 @@ export const fetchPlayerData = unstable_cache(
 );
 
 export async function fetchPlayerDataByID(id: number): Promise<Player | null> {
-  // Use Promise.all for parallel data fetching
   const [playerResult, statsResult, averagesResult, ciceroScoreResult] =
     await Promise.all([
       db.select().from(players).where(eq(players.id, id)),
@@ -72,10 +72,8 @@ export async function fetchPlayerDataByID(id: number): Promise<Player | null> {
         .from(ciceroScores)
         .where(eq(ciceroScores.player_id, id))
         .orderBy(desc(ciceroScores.calculated_at))
-        .limit(1),
+        .limit(20),
     ]);
-  // const wait = new Promise((res) => setTimeout(res, 3000));
-  // await wait;
 
   if (playerResult.length === 0) {
     return null;
@@ -83,18 +81,20 @@ export async function fetchPlayerDataByID(id: number): Promise<Player | null> {
 
   const player = playerResult[0];
   const pictureUrl = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/${id}.png`;
+  const stats = statsResult || [];
+  const pr_price_series = buildPrPriceSeries(ciceroScoreResult, stats);
 
   try {
     return playerSchema.parse({
       ...player,
       averages: averagesResult[0],
-      stats: statsResult || [],
-      cicero_score: ciceroScoreResult[0]?.cicero_score ?? null,
+      stats,
+      pr_price_series,
       picture: pictureUrl,
     });
   } catch (error) {
     console.error('Failed to parse player data:', error);
-    return null; // More graceful error handling
+    return null;
   }
 }
 

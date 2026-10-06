@@ -131,8 +131,8 @@ function ChartTooltipContent({
     return null;
   }
 
-  const data = payload[0]?.payload; // Access the data object
-  console.log(data);
+  const data = payload[0]?.payload;
+  const prValue = data?.score ?? data?.prScore;
 
   return (
     <div
@@ -144,67 +144,80 @@ function ChartTooltipContent({
       {data && data.isDNP ? (
         <div className="grid gap-1.5">
           <div className="text-muted-foreground">
-            PR Score:
+            PR:
             <span className="text-foreground font-medium">
-              {' ' + data.prScore}
+              {' ' + prValue}
             </span>
           </div>
-          <div className="text-muted-foreground">
-            Did Not Play
-            <span className="text-foreground font-medium"></span>
-          </div>
-          <div className="text-muted-foreground">
-            Opp:
-            <span className="text-foreground font-medium">
-              {' ' + data.opp}
-            </span>
-            <span className="text-foreground font-medium">
-              {' - ' + data.game_result}
-            </span>
-          </div>
-        </div>
-      ) : (
-        data && (
-          <div className="grid gap-1.5">
-            <div className="text-muted-foreground">
-              PR Score:
-              <span className="text-foreground font-medium">
-                {' ' + data.prScore}
-              </span>
-            </div>
-            <div className="text-muted-foreground">
-              PTS:
-              <span className="text-foreground font-medium">
-                {' ' + data.points}
-              </span>
-            </div>
-            <div className="text-muted-foreground">
-              Assists:
-              <span className="text-foreground font-medium">
-                {' ' + data.assists}
-              </span>
-            </div>
-            <div className="text-muted-foreground">
-              Rebounds:
-              <span className="text-foreground font-medium">
-                {' ' + data.rebounds}
-              </span>
-            </div>
+          <div className="text-muted-foreground">Did Not Play</div>
+          {data.opp != null ? (
             <div className="text-muted-foreground">
               Opp:
               <span className="text-foreground font-medium">
                 {' ' + data.opp}
               </span>
-              <span className="text-foreground font-medium">
-                {' - ' + data.game_result}
-              </span>
+              {data.game_result != null ? (
+                <span className="text-foreground font-medium">
+                  {' - ' + data.game_result}
+                </span>
+              ) : null}
             </div>
+          ) : null}
+        </div>
+      ) : (
+        data && (
+          <div className="grid gap-1.5">
             <div className="text-muted-foreground">
-              Minutes
+              PR:
               <span className="text-foreground font-medium">
-                {' ' + data.min}
+                {' ' + prValue}
               </span>
             </div>
+            {data.points != null ? (
+              <div className="text-muted-foreground">
+                PTS:
+                <span className="text-foreground font-medium">
+                  {' ' + data.points}
+                </span>
+              </div>
+            ) : null}
+            {data.assists != null ? (
+              <div className="text-muted-foreground">
+                Assists:
+                <span className="text-foreground font-medium">
+                  {' ' + data.assists}
+                </span>
+              </div>
+            ) : null}
+            {data.rebounds != null ? (
+              <div className="text-muted-foreground">
+                Rebounds:
+                <span className="text-foreground font-medium">
+                  {' ' + data.rebounds}
+                </span>
+              </div>
+            ) : null}
+            {data.opp != null ? (
+              <div className="text-muted-foreground">
+                Opp:
+                <span className="text-foreground font-medium">
+                  {' ' + data.opp}
+                </span>
+                {data.game_result != null ? (
+                  <span className="text-foreground font-medium">
+                    {' - ' + data.game_result}
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
+            {data.min != null ? (
+              <div className="text-muted-foreground">
+                Minutes
+                <span className="text-foreground font-medium">
+                  {' ' + data.min}
+                </span>
+              </div>
+            ) : null}
           </div>
         )
       )}
