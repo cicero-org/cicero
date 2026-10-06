@@ -1,6 +1,5 @@
 import { getSessionCookie } from 'better-auth/cookies';
 import { NextResponse, NextRequest } from 'next/server';
-import { isReviewAuthBypassEnabled } from '@/lib/review-auth';
 
 const PUBLIC_PATHS = new Set([
   '/',
@@ -25,11 +24,6 @@ export default function middleware(req: NextRequest) {
   }
 
   if (PUBLIC_PATHS.has(pathname)) {
-    return NextResponse.next();
-  }
-
-  // Preview/local review only — never production (see lib/review-auth.ts)
-  if (isReviewAuthBypassEnabled()) {
     return NextResponse.next();
   }
 

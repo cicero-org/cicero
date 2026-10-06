@@ -11,7 +11,6 @@ const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' });
 import QueryProvider from '@/components/providers/QueryProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { auth } from '@/lib/auth';
-import { isReviewAuthBypassEnabled } from '@/lib/review-auth';
 
 export const metadata: Metadata = {
   title: 'Cicero - Development',
@@ -24,11 +23,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  if (!isReviewAuthBypassEnabled()) {
-    const session = await auth.api.getSession({ headers: await headers() });
-    if (!session?.user) redirect('/login');
-    if (!session.user.onboarding_status) redirect('/onboarding');
-  }
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user) redirect('/login');
+  if (!session.user.onboarding_status) redirect('/onboarding');
 
   return (
     <html lang="en" className={` ${inter.variable} ${roboto.variable}`}>
