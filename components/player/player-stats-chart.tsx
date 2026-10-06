@@ -172,11 +172,17 @@ export function PlayerStatsChart({
         </CardContent>
 
         <CardFooter className="w-full flex-col items-start gap-2 py-6 text-sm md:py-0">
-          <div className="flex gap-2 leading-none font-medium">
-            {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
-            {Math.abs(percentageDifference).toFixed(1)}% from average
-            <TrendingUp className="text-muted-foreground h-4 w-4" />
-          </div>
+          {priceSeries.length >= 2 ? (
+            <div className="flex gap-2 leading-none font-medium">
+              {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
+              {Math.abs(percentageDifference).toFixed(1)}% vs series avg
+              <TrendingUp className="text-muted-foreground h-4 w-4" />
+            </div>
+          ) : (
+            <div className="text-muted-foreground leading-none font-medium">
+              Need another PR quote before a trend % is meaningful.
+            </div>
+          )}
           <div className="text-muted-foreground leading-none">
             Latest PR: {current.score.toFixed(1)} (PR avg{' '}
             {averageScore.toFixed(1)})
