@@ -32,7 +32,7 @@ export default async function PlayerDetailsPage({
   const priceSeries = player.pr_price_series ?? [];
 
   return (
-    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto_auto]">
+    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto]">
       <Suspense fallback={<PlayerDetailsStaticSkeleton />}>
         <PlayerDetailsStatic player={player} />
       </Suspense>

@@ -23,8 +23,8 @@ const PlayerActionBar = ({ averages, priceSeries }: PlayerActionBarProps) => {
     averages?.ppg != null || averages?.apg != null || averages?.rpg != null;
 
   return (
-    <Card className="flex h-full w-full flex-col gap-4 py-6 md:col-span-8 md:flex-row md:items-stretch">
-      <CardHeader className="w-full space-y-3 md:w-1/2 md:pr-4">
+    <Card className="flex h-full w-full flex-col gap-6 py-6 md:col-span-4">
+      <CardHeader className="w-full space-y-3 pb-0">
         <div>
           <CardTitle className="text-lg">Season averages</CardTitle>
           <CardDescription>
@@ -65,7 +65,7 @@ const PlayerActionBar = ({ averages, priceSeries }: PlayerActionBarProps) => {
         )}
       </CardHeader>
 
-      <CardContent className="flex w-full flex-col justify-center gap-3 md:w-1/2 md:border-l md:pl-6">
+      <CardContent className="flex w-full flex-col gap-3 border-t pt-6">
         <div>
           <div className="text-lg font-semibold">Recent form</div>
           <p className="text-muted-foreground text-sm">
@@ -79,7 +79,10 @@ const PlayerActionBar = ({ averages, priceSeries }: PlayerActionBarProps) => {
         ) : (
           <div className="flex flex-wrap items-center gap-2">
             {recentForm.map((point, index) => (
-              <div key={`${point.label}-${point.score}-${index}`} className="flex items-center gap-2">
+              <div
+                key={`${point.label}-${point.score}-${index}`}
+                className="flex items-center gap-2"
+              >
                 <div className="bg-muted rounded-md px-2.5 py-1.5 text-center">
                   <div className="text-sm font-semibold tabular-nums">
                     {point.score.toFixed(1)}

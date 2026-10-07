@@ -175,7 +175,7 @@ export function PlayerStatsChart({
           {priceSeries.length >= 2 ? (
             <div className="flex gap-2 leading-none font-medium">
               {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
-              {Math.abs(percentageDifference).toFixed(1)}% vs series avg
+              {Math.abs(percentageDifference).toFixed(1)}% vs avg of these games
               <TrendingUp className="text-muted-foreground h-4 w-4" />
             </div>
           ) : (
@@ -184,7 +184,7 @@ export function PlayerStatsChart({
             </div>
           )}
           <div className="text-muted-foreground leading-none">
-            Latest PR: {current.score.toFixed(1)} (PR avg{' '}
+            Latest PR: {current.score.toFixed(1)} (avg of these games{' '}
             {averageScore.toFixed(1)})
           </div>
         </CardFooter>
