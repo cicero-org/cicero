@@ -1,10 +1,5 @@
 import React from 'react';
 import {
-  Carousel,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import {
   CartesianGrid,
   Line,
   LineChart,
@@ -35,7 +30,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ThumbsDown, ThumbsUp } from 'lucide-react';
 
 export function ExploreTableSkeleton() {
   return (
@@ -101,60 +95,16 @@ export function PlayerStatsChartSkeleton() {
 
 export async function PlayerActionBarSkeleton() {
   return (
-    <Card className="flex w-full flex-col justify-between md:col-span-8 md:flex-row">
-      <CardHeader className="w-full md:w-1/2">
-        <CardTitle>Do You Agree?</CardTitle>
-      </CardHeader>
-      <CardContent className="flex w-full justify-end gap-4 p-6 md:w-1/4">
-        <ThumbsUp />
-        <ThumbsDown />
-      </CardContent>
-    </Card>
-  );
-}
-
-export async function PlayerAiSummarySkeleton() {
-  return (
-    <Card className="flex w-full flex-col md:col-span-4">
-      <CardHeader className="min-h-[88px] pb-3">
-        <CardTitle>PR Trend</CardTitle>
-        <CardDescription className="h-full grow">
-          AI Summary of what affected the score.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex grow flex-col overflow-auto">
-        <div className="flex h-full grow flex-col justify-between gap-2">
-          <Skeleton className="h-[75px] w-full md:h-[75%]"></Skeleton>
-          <Skeleton className="flex h-[25px] w-full grow"></Skeleton>
+    <Card className="flex w-full flex-col py-6 md:col-span-8">
+      <CardHeader className="w-full space-y-3">
+        <CardTitle>Season averages</CardTitle>
+        <CardDescription>Loading decision context…</CardDescription>
+        <div className="grid grid-cols-3 gap-3">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
         </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-export async function PlayerNewsSkeleton() {
-  return (
-    <Card className="flex w-full flex-col justify-between md:col-span-4">
-      <Carousel className="flex grow flex-col">
-        <CardHeader className="flex w-full flex-row space-y-0 pb-3">
-          <div className="flex w-1/2 flex-col">
-            <CardTitle className="text-2xl">NBA News</CardTitle>
-            <CardDescription>Get the latest news on the NBA</CardDescription>
-          </div>
-
-          <div className="mt-0 flex grow items-center justify-end gap-2">
-            <CarouselPrevious className="relative top-0 right-0 left-0 m-0 translate-x-0 translate-y-0" />
-            <CarouselNext className="relative top-0 right-0 left-0 m-0 translate-x-0 translate-y-0" />
-          </div>
-        </CardHeader>
-
-        <CardContent className="flex grow flex-col">
-          <div className="flex h-full grow flex-col justify-between gap-2">
-            <Skeleton className="h-[75px] w-full md:h-[75%]"></Skeleton>
-            <Skeleton className="h-[25px] w-full grow md:flex"></Skeleton>
-          </div>
-        </CardContent>
-      </Carousel>
+      </CardHeader>
     </Card>
   );
 }

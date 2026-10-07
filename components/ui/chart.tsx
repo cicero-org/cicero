@@ -133,94 +133,64 @@ function ChartTooltipContent({
 
   const data = payload[0]?.payload;
   const prValue = data?.score ?? data?.prScore;
+  const dateLabel =
+    typeof label === 'string' || typeof label === 'number'
+      ? String(label)
+      : data?.label;
+  const hasBoxScore =
+    data?.points != null || data?.assists != null || data?.rebounds != null;
 
   return (
     <div
       className={cn(
-        'border-border/50 bg-card grid min-w-[8rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl',
+        'border-border/50 bg-card grid min-w-[10rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl',
         className,
       )}
     >
-      {data && data.isDNP ? (
+      {data ? (
         <div className="grid gap-1.5">
+          {dateLabel ? (
+            <div className="text-foreground font-medium">{dateLabel}</div>
+          ) : null}
           <div className="text-muted-foreground">
-            PR:
+            PR
             <span className="text-foreground font-medium">
-              {' ' + prValue}
+              {' '}
+              {typeof prValue === 'number' ? prValue.toFixed(1) : prValue}
             </span>
           </div>
-          <div className="text-muted-foreground">Did Not Play</div>
+          {data.isDNP ? (
+            <div className="text-muted-foreground">Did not play</div>
+          ) : null}
+          {hasBoxScore ? (
+            <div className="text-foreground font-medium tabular-nums">
+              {[
+                data.points != null ? `${data.points} PTS` : null,
+                data.assists != null ? `${data.assists} AST` : null,
+                data.rebounds != null ? `${data.rebounds} REB` : null,
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+            </div>
+          ) : null}
           {data.opp != null ? (
             <div className="text-muted-foreground">
-              Opp:
-              <span className="text-foreground font-medium">
-                {' ' + data.opp}
-              </span>
+              vs {data.opp}
               {data.game_result != null ? (
                 <span className="text-foreground font-medium">
-                  {' - ' + data.game_result}
+                  {' '}
+                  ({data.game_result})
                 </span>
               ) : null}
             </div>
           ) : null}
-        </div>
-      ) : (
-        data && (
-          <div className="grid gap-1.5">
+          {data.min != null && !data.isDNP ? (
             <div className="text-muted-foreground">
-              PR:
-              <span className="text-foreground font-medium">
-                {' ' + prValue}
-              </span>
+              {data.min} min
             </div>
-            {data.points != null ? (
-              <div className="text-muted-foreground">
-                PTS:
-                <span className="text-foreground font-medium">
-                  {' ' + data.points}
-                </span>
-              </div>
-            ) : null}
-            {data.assists != null ? (
-              <div className="text-muted-foreground">
-                Assists:
-                <span className="text-foreground font-medium">
-                  {' ' + data.assists}
-                </span>
-              </div>
-            ) : null}
-            {data.rebounds != null ? (
-              <div className="text-muted-foreground">
-                Rebounds:
-                <span className="text-foreground font-medium">
-                  {' ' + data.rebounds}
-                </span>
-              </div>
-            ) : null}
-            {data.opp != null ? (
-              <div className="text-muted-foreground">
-                Opp:
-                <span className="text-foreground font-medium">
-                  {' ' + data.opp}
-                </span>
-                {data.game_result != null ? (
-                  <span className="text-foreground font-medium">
-                    {' - ' + data.game_result}
-                  </span>
-                ) : null}
-              </div>
-            ) : null}
-            {data.min != null ? (
-              <div className="text-muted-foreground">
-                Minutes
-                <span className="text-foreground font-medium">
-                  {' ' + data.min}
-                </span>
-              </div>
-            ) : null}
-          </div>
-        )
-      )}
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

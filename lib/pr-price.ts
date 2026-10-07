@@ -28,6 +28,52 @@ function formatPriceLabel(date: Date) {
   });
 }
 
+function utcDayKey(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function gameContextFromStats(row: StatsRowForPrice) {
+  return {
+    statsId: row.stats_id,
+    points: row.points,
+    assists: row.assists,
+    rebounds: row.totReb,
+    opp: row.opp ?? null,
+    gameResult: row.game_result ?? null,
+    min: row.min,
+    comment: row.comment ?? null,
+  };
+}
+
+function pickPreferredStat(rows: StatsRowForPrice[]) {
+  if (rows.length === 0) return null;
+  return rows.find((row) => !row.is_mock) ?? rows[0] ?? null;
+}
+
+/** Match a PR quote to a box score: same UTC day, then nearest game within 36h. */
+function findStatsForQuoteDate(
+  statsRows: StatsRowForPrice[],
+  at: Date,
+): StatsRowForPrice | null {
+  const key = utcDayKey(at);
+  const sameDay = pickPreferredStat(
+    statsRows.filter((row) => utcDayKey(new Date(row.gamedate)) === key),
+  );
+  if (sameDay) return sameDay;
+
+  const maxDiffMs = 36 * 60 * 60 * 1000;
+  let best: StatsRowForPrice | null = null;
+  let bestDiff = Infinity;
+  for (const row of statsRows) {
+    const diff = Math.abs(new Date(row.gamedate).getTime() - at.getTime());
+    if (diff > maxDiffMs || diff >= bestDiff) continue;
+    if (best && !best.is_mock && row.is_mock) continue;
+    best = row;
+    bestDiff = diff;
+  }
+  return best;
+}
+
 export function buildPrPriceSeries(
   ciceroRows: CiceroScoreRow[],
   statsRows: StatsRowForPrice[],
@@ -37,12 +83,14 @@ export function buildPrPriceSeries(
     .filter((row) => row.calculated_at != null)
     .map((row) => {
       const at = new Date(row.calculated_at!);
+      const matched = findStatsForQuoteDate(statsRows, at);
       return {
         score: Number(row.cicero_score),
         at,
         source: 'cicero_scores' as const,
         isMock: false,
         label: formatPriceLabel(at),
+        ...(matched ? gameContextFromStats(matched) : {}),
       };
     })
     .filter((point) => Number.isFinite(point.score))
@@ -62,14 +110,7 @@ export function buildPrPriceSeries(
         source: 'player_stats' as const,
         isMock: Boolean(row.is_mock),
         label: formatPriceLabel(at),
-        statsId: row.stats_id,
-        points: row.points,
-        assists: row.assists,
-        rebounds: row.totReb,
-        opp: row.opp ?? null,
-        gameResult: row.game_result ?? null,
-        min: row.min,
-        comment: row.comment ?? null,
+        ...gameContextFromStats(row),
       };
     })
     .sort((a, b) => a.at.getTime() - b.at.getTime());

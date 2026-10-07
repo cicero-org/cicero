@@ -1,27 +1,66 @@
 import {
   Card,
-  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { PlayerAverages } from '@/lib/definitions';
+import type { PlayerAverages } from '@/lib/definitions';
 
 interface PlayerActionBarProps {
   averages: PlayerAverages | null | undefined;
 }
 
-const PlayerActionBar = ({ averages }: PlayerActionBarProps) => {
-  return (
-    <Card className="flex h-full w-full flex-col justify-between py-6 md:col-span-8 md:flex-row">
-      <CardHeader className="w-full flex-row md:w-3/4">
-        <CardTitle className="text-xl">PPG: {averages?.ppg ?? '—'}</CardTitle>
-        <CardTitle className="text-xl">APG: {averages?.apg ?? '—'}</CardTitle>
-        <CardTitle className="text-xl">RPG: {averages?.rpg ?? '—'}</CardTitle>
-      </CardHeader>
+function formatAvg(value: number | undefined) {
+  if (value == null || Number.isNaN(value)) return '—';
+  return Number(value).toFixed(1);
+}
 
-      <CardContent className="text-muted-foreground flex w-full items-center justify-end text-sm md:w-1/4">
-        Season averages
-      </CardContent>
+const PlayerActionBar = ({ averages }: PlayerActionBarProps) => {
+  const hasAverages =
+    averages?.ppg != null || averages?.apg != null || averages?.rpg != null;
+
+  return (
+    <Card className="flex w-full flex-col justify-start py-6 md:col-span-8">
+      <CardHeader className="w-full space-y-3">
+        <div>
+          <CardTitle className="text-lg">Season averages</CardTitle>
+          <CardDescription>
+            Context next to the PR price — not a second score.
+          </CardDescription>
+        </div>
+        {hasAverages ? (
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <div className="text-muted-foreground text-xs uppercase tracking-wide">
+                PPG
+              </div>
+              <div className="text-2xl font-semibold tabular-nums">
+                {formatAvg(averages?.ppg)}
+              </div>
+            </div>
+            <div>
+              <div className="text-muted-foreground text-xs uppercase tracking-wide">
+                APG
+              </div>
+              <div className="text-2xl font-semibold tabular-nums">
+                {formatAvg(averages?.apg)}
+              </div>
+            </div>
+            <div>
+              <div className="text-muted-foreground text-xs uppercase tracking-wide">
+                RPG
+              </div>
+              <div className="text-2xl font-semibold tabular-nums">
+                {formatAvg(averages?.rpg)}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-sm">
+            Season averages aren&apos;t available for this player yet.
+          </p>
+        )}
+      </CardHeader>
     </Card>
   );
 };

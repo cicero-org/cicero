@@ -91,23 +91,23 @@ export function PlayerStatsChart({
   return (
     <Card className="flex grow flex-col gap-0 md:col-span-5 md:flex-row lg:col-span-6">
       <div className="box-border flex h-full grow flex-col justify-between md:w-3/4">
-        <CardHeader className="flex w-full md:pb-0">
+        <CardHeader className="flex w-full pb-0">
           <CardTitle className="w-full text-2xl">Pulse Rating (PR)</CardTitle>
           <CardDescription className="w-full">{description}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex w-full flex-col items-center justify-center px-4 md:flex-row md:pb-0">
+        <CardContent className="flex w-full flex-col items-center justify-center px-4 py-0 md:flex-row">
           <ResponsiveContainer width="100%">
             <ChartContainer
               config={chartConfig}
-              className="flex h-[200px] w-full items-center justify-center"
+              className="flex h-[160px] w-full items-center justify-center"
             >
               <LineChart
                 data={chartData}
                 margin={{
                   top: 10,
-                  left: 4,
-                  right: 8,
+                  left: 8,
+                  right: 12,
                 }}
                 accessibilityLayer
               >
@@ -121,9 +121,10 @@ export function PlayerStatsChart({
                   tickMargin={8}
                   tickLine={false}
                   axisLine={false}
+                  padding={{ left: 20, right: 20 }}
                 />
                 <YAxis
-                  width={25}
+                  width={28}
                   tickLine={false}
                   axisLine={false}
                   tickMargin={1}
@@ -171,15 +172,22 @@ export function PlayerStatsChart({
           </ResponsiveContainer>
         </CardContent>
 
-        <CardFooter className="w-full flex-col items-start gap-2 py-6 text-sm md:py-0">
-          <div className="flex gap-2 leading-none font-medium">
-            {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
-            {Math.abs(percentageDifference).toFixed(1)}% from average
-            <TrendingUp className="text-muted-foreground h-4 w-4" />
-          </div>
+        <CardFooter className="w-full flex-col items-start gap-2 px-6 pt-1 pb-0 text-sm">
+          {priceSeries.length >= 2 ? (
+            <div className="flex gap-2 leading-none font-medium">
+              {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
+              {Math.abs(percentageDifference).toFixed(1)}% vs last{' '}
+              {priceSeries.length} games
+              <TrendingUp className="text-muted-foreground h-4 w-4" />
+            </div>
+          ) : (
+            <div className="text-muted-foreground leading-none font-medium">
+              Need another PR quote before a trend % is meaningful.
+            </div>
+          )}
           <div className="text-muted-foreground leading-none">
-            Latest PR: {current.score.toFixed(1)} (PR avg{' '}
-            {averageScore.toFixed(1)})
+            Latest PR: {current.score.toFixed(1)} (last-{priceSeries.length}{' '}
+            avg {averageScore.toFixed(1)})
           </div>
         </CardFooter>
       </div>
