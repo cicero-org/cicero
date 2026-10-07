@@ -95,8 +95,8 @@ export function PlayerStatsChartSkeleton() {
 
 export async function PlayerActionBarSkeleton() {
   return (
-    <Card className="flex w-full flex-col gap-6 py-6 md:col-span-4">
-      <CardHeader className="w-full space-y-3 pb-0">
+    <Card className="flex h-full w-full flex-col py-6">
+      <CardHeader className="w-full space-y-3">
         <CardTitle>Season averages</CardTitle>
         <CardDescription>Loading decision context…</CardDescription>
         <div className="grid grid-cols-3 gap-3">
@@ -105,17 +105,13 @@ export async function PlayerActionBarSkeleton() {
           <Skeleton className="h-12 w-full" />
         </div>
       </CardHeader>
-      <CardContent className="flex w-full flex-col gap-3 border-t pt-6">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-10 w-full" />
-      </CardContent>
     </Card>
   );
 }
 
 export async function PlayerPrTrendSkeleton() {
   return (
-    <Card className="flex h-full w-full flex-col md:col-span-4">
+    <Card className="flex h-full w-full flex-col">
       <CardHeader className="pb-3">
         <CardTitle>PR Trend</CardTitle>
         <CardDescription>Loading real score change…</CardDescription>

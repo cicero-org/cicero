@@ -106,8 +106,8 @@ export function PlayerStatsChart({
                 data={chartData}
                 margin={{
                   top: 10,
-                  left: 4,
-                  right: 8,
+                  left: 8,
+                  right: 12,
                 }}
                 accessibilityLayer
               >
@@ -121,9 +121,10 @@ export function PlayerStatsChart({
                   tickMargin={8}
                   tickLine={false}
                   axisLine={false}
+                  padding={{ left: 20, right: 20 }}
                 />
                 <YAxis
-                  width={25}
+                  width={28}
                   tickLine={false}
                   axisLine={false}
                   tickMargin={1}
@@ -175,7 +176,8 @@ export function PlayerStatsChart({
           {priceSeries.length >= 2 ? (
             <div className="flex gap-2 leading-none font-medium">
               {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
-              {Math.abs(percentageDifference).toFixed(1)}% vs avg of these games
+              {Math.abs(percentageDifference).toFixed(1)}% vs last{' '}
+              {priceSeries.length} games
               <TrendingUp className="text-muted-foreground h-4 w-4" />
             </div>
           ) : (
@@ -184,8 +186,8 @@ export function PlayerStatsChart({
             </div>
           )}
           <div className="text-muted-foreground leading-none">
-            Latest PR: {current.score.toFixed(1)} (avg of these games{' '}
-            {averageScore.toFixed(1)})
+            Latest PR: {current.score.toFixed(1)} (last-{priceSeries.length}{' '}
+            avg {averageScore.toFixed(1)})
           </div>
         </CardFooter>
       </div>

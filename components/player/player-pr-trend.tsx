@@ -17,7 +17,7 @@ export default function PlayerPrTrend({
 
   if (!trend) {
     return (
-      <Card className="flex h-full w-full flex-col justify-start md:col-span-4">
+      <Card className="flex h-full w-full flex-col justify-start">
         <CardHeader className="pb-3">
           <CardTitle>PR Trend</CardTitle>
           <CardDescription>
@@ -49,7 +49,7 @@ export default function PlayerPrTrend({
       : 'from game stats (cicero_scores empty)';
 
   return (
-    <Card className="flex h-full w-full flex-col justify-start md:col-span-4">
+    <Card className="flex h-full w-full flex-col justify-start">
       <CardHeader className="pb-3">
         <CardTitle>PR Trend</CardTitle>
         <CardDescription>
@@ -68,7 +68,7 @@ export default function PlayerPrTrend({
           {trend.previous.label}).
         </p>
         <p className="text-muted-foreground">
-          Change vs prior: {deltaLabel} · vs avg of these games (
+          Change vs prior: {deltaLabel} · vs last {trend.pointCount} games avg (
           {trend.average.toFixed(1)}): {vsAvgLabel}
         </p>
       </CardContent>

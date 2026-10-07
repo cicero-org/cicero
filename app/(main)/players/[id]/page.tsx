@@ -32,7 +32,7 @@ export default async function PlayerDetailsPage({
   const priceSeries = player.pr_price_series ?? [];
 
   return (
-    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto]">
+    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto] md:items-stretch">
       <Suspense fallback={<PlayerDetailsStaticSkeleton />}>
         <PlayerDetailsStatic player={player} />
       </Suspense>
@@ -41,13 +41,19 @@ export default async function PlayerDetailsPage({
         <PlayerStatsChart priceSeries={priceSeries} />
       </Suspense>
 
-      <Suspense fallback={<PlayerActionBarSkeleton />}>
-        <PlayerActionBar averages={player.averages} priceSeries={priceSeries} />
-      </Suspense>
+      <div className="col-span-1 flex flex-col gap-2 md:col-span-8 md:grid md:grid-cols-2 md:items-stretch md:gap-2">
+        <div className="h-full min-h-0">
+          <Suspense fallback={<PlayerActionBarSkeleton />}>
+            <PlayerActionBar averages={player.averages} />
+          </Suspense>
+        </div>
 
-      <Suspense fallback={<PlayerPrTrendSkeleton />}>
-        <PlayerPrTrend priceSeries={priceSeries} />
-      </Suspense>
+        <div className="h-full min-h-0">
+          <Suspense fallback={<PlayerPrTrendSkeleton />}>
+            <PlayerPrTrend priceSeries={priceSeries} />
+          </Suspense>
+        </div>
+      </div>
     </div>
   );
 }
