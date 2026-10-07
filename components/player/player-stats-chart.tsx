@@ -90,13 +90,13 @@ export function PlayerStatsChart({
 
   return (
     <Card className="flex grow flex-col gap-0 md:col-span-5 md:flex-row lg:col-span-6">
-      <div className="box-border flex h-full grow flex-col justify-between md:w-3/4">
-        <CardHeader className="flex w-full md:pb-0">
+      <div className="box-border flex h-full grow flex-col justify-start gap-3 md:w-3/4">
+        <CardHeader className="flex w-full pb-0">
           <CardTitle className="w-full text-2xl">Pulse Rating (PR)</CardTitle>
           <CardDescription className="w-full">{description}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex w-full flex-col items-center justify-center px-4 pb-0 md:flex-row">
+        <CardContent className="flex w-full flex-col items-center justify-center px-4 py-0 md:flex-row">
           <ResponsiveContainer width="100%">
             <ChartContainer
               config={chartConfig}
@@ -172,7 +172,7 @@ export function PlayerStatsChart({
           </ResponsiveContainer>
         </CardContent>
 
-        <CardFooter className="w-full flex-col items-start gap-2 pt-8 pb-6 text-sm md:pt-10 md:pb-6">
+        <CardFooter className="w-full flex-col items-start gap-2 px-6 pt-1 pb-0 text-sm">
           {priceSeries.length >= 2 ? (
             <div className="flex gap-2 leading-none font-medium">
               {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}
