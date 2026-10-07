@@ -96,7 +96,7 @@ export function PlayerStatsChart({
           <CardDescription className="w-full">{description}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex w-full flex-col items-center justify-center px-4 md:flex-row md:pb-0">
+        <CardContent className="flex w-full flex-col items-center justify-center px-4 pb-0 md:flex-row">
           <ResponsiveContainer width="100%">
             <ChartContainer
               config={chartConfig}
@@ -172,7 +172,7 @@ export function PlayerStatsChart({
           </ResponsiveContainer>
         </CardContent>
 
-        <CardFooter className="w-full flex-col items-start gap-2 py-6 text-sm md:py-0">
+        <CardFooter className="w-full flex-col items-start gap-2 pt-8 pb-6 text-sm md:pt-10 md:pb-6">
           {priceSeries.length >= 2 ? (
             <div className="flex gap-2 leading-none font-medium">
               {scoreDifference >= 0 ? 'PR up' : 'PR down'} by{' '}

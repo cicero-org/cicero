@@ -3,12 +3,10 @@ import {
   PlayerDetailsStaticSkeleton,
   PlayerStatsChartSkeleton,
   PlayerActionBarSkeleton,
-  PlayerPrTrendSkeleton,
 } from '@/components/layout/skeletons';
 import { fetchPlayerDataByID } from '@/lib/data/players';
 import { PlayerDetailsStatic } from '@/components/player/player-detail-static';
 import { PlayerStatsChart } from '@/components/player/player-stats-chart';
-import PlayerPrTrend from '@/components/player/player-pr-trend';
 import PlayerActionBar from '@/components/player/player-action-bar';
 
 export default async function PlayerDetailsPage({
@@ -32,7 +30,7 @@ export default async function PlayerDetailsPage({
   const priceSeries = player.pr_price_series ?? [];
 
   return (
-    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto] md:items-stretch">
+    <div className="flex h-fit w-full flex-col gap-2 md:grid md:grid-cols-8 md:grid-rows-[350px_auto]">
       <Suspense fallback={<PlayerDetailsStaticSkeleton />}>
         <PlayerDetailsStatic player={player} />
       </Suspense>
@@ -41,19 +39,9 @@ export default async function PlayerDetailsPage({
         <PlayerStatsChart priceSeries={priceSeries} />
       </Suspense>
 
-      <div className="col-span-1 flex flex-col gap-2 md:col-span-8 md:grid md:grid-cols-2 md:items-stretch md:gap-2">
-        <div className="h-full min-h-0">
-          <Suspense fallback={<PlayerActionBarSkeleton />}>
-            <PlayerActionBar averages={player.averages} />
-          </Suspense>
-        </div>
-
-        <div className="h-full min-h-0">
-          <Suspense fallback={<PlayerPrTrendSkeleton />}>
-            <PlayerPrTrend priceSeries={priceSeries} />
-          </Suspense>
-        </div>
-      </div>
+      <Suspense fallback={<PlayerActionBarSkeleton />}>
+        <PlayerActionBar averages={player.averages} />
+      </Suspense>
     </div>
   );
 }

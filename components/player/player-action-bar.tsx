@@ -20,7 +20,7 @@ const PlayerActionBar = ({ averages }: PlayerActionBarProps) => {
     averages?.ppg != null || averages?.apg != null || averages?.rpg != null;
 
   return (
-    <Card className="flex h-full w-full flex-col justify-start py-6">
+    <Card className="flex w-full flex-col justify-start py-6 md:col-span-8">
       <CardHeader className="w-full space-y-3">
         <div>
           <CardTitle className="text-lg">Season averages</CardTitle>

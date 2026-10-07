@@ -122,25 +122,3 @@ export function getCurrentPrPrice(series: PrPricePoint[]) {
   if (series.length === 0) return null;
   return series[series.length - 1];
 }
-
-/** Honest point-to-point trend from the same series as PR price. Needs ≥2 points. */
-export function getPrTrend(series: PrPricePoint[]) {
-  if (series.length < 2) return null;
-
-  const latest = series[series.length - 1]!;
-  const previous = series[series.length - 2]!;
-  const delta = latest.score - previous.score;
-  const average =
-    series.reduce((sum, point) => sum + point.score, 0) / series.length;
-  const vsAverage = latest.score - average;
-
-  return {
-    latest,
-    previous,
-    delta,
-    average,
-    vsAverage,
-    pointCount: series.length,
-    source: latest.source,
-  };
-}
