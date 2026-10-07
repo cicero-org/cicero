@@ -90,7 +90,7 @@ export function PlayerStatsChart({
 
   return (
     <Card className="flex grow flex-col gap-0 md:col-span-5 md:flex-row lg:col-span-6">
-      <div className="box-border flex h-full grow flex-col justify-start gap-3 md:w-3/4">
+      <div className="box-border flex h-full grow flex-col justify-between md:w-3/4">
         <CardHeader className="flex w-full pb-0">
           <CardTitle className="w-full text-2xl">Pulse Rating (PR)</CardTitle>
           <CardDescription className="w-full">{description}</CardDescription>
