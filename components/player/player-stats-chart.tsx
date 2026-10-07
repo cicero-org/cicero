@@ -100,7 +100,7 @@ export function PlayerStatsChart({
           <ResponsiveContainer width="100%">
             <ChartContainer
               config={chartConfig}
-              className="flex h-[200px] w-full items-center justify-center"
+              className="flex h-[160px] w-full items-center justify-center"
             >
               <LineChart
                 data={chartData}
